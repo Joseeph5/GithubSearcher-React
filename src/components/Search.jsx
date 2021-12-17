@@ -8,6 +8,9 @@ function Search({ error, requests, isLoading }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (user.current.value) {
+      console.log(user.current.value);
+    }
   };
   return (
     <section className='section'>

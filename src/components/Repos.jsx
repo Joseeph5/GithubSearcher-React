@@ -1,15 +1,63 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import PieChart from './charts/PieChart';
+import { PieChart, Doughnut, Bar, Column } from './charts';
 
 function Repos({ repos }) {
-  console.log(repos);
+  let languages = repos.reduce((total, item) => {
+    const { language, stargazers_count } = item;
+    if (!language) return total;
+
+    if (!total[language]) {
+      total[language] = { label: language, value: 1, stars: stargazers_count };
+    } else {
+      total[language] = {
+        ...total[language],
+        value: total[language].value + 1,
+        stars: total[language].stars + stargazers_count,
+      };
+    }
+
+    return total;
+  }, {});
+
+  languages = Object.values(languages)
+    .sort((a, b) => {
+      return b.value - a.value;
+    })
+    .slice(0, 5);
+
+  const StarsPerLang = languages.map((lang) => {
+    return { label: lang.label, value: lang.stars };
+  });
+
+  const mostPoular = repos
+    .map((item) => {
+      const { name, stargazers_count } = item;
+      return { label: name, value: stargazers_count };
+    })
+    .sort((a, b) => {
+      return b.value - a.value;
+    })
+    .slice(0, 5);
+
+  const mostForked = repos
+    .map((item) => {
+      const { name, forks_count } = item;
+      return { label: name, value: forks_count };
+    })
+    .sort((a, b) => {
+      return b.value - a.value;
+    })
+    .slice(0, 5);
+
   return (
     <section className='section'>
       <Wrapper className='section-center'>
-        <PieChart />
-        <PieChart />
+        <PieChart data={languages} />
+        <Bar data={mostForked} />
+        <Doughnut data={StarsPerLang} />
+        <Column data={mostPoular} />
       </Wrapper>
     </section>
   );

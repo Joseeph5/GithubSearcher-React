@@ -18,30 +18,27 @@ import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 ReactFC.fcRoot(FusionCharts, Column2D, FusionTheme);
 
 // STEP 2 - Chart Data
-const chartData = [];
 
 // STEP 3 - Creating the JSON object to store the chart configurations
-const chartConfigs = {
-  type: 'pie2d', // The chart type
-  width: '400', // Width of the chart
-  height: '400', // Height of the chart
-  dataFormat: 'json', // Data type
-  dataSource: {
-    chart: {
-      caption: 'Split of Visitors by Age Group',
-      subCaption: 'Last year',
-      use3DLighting: '0',
-      showPercentValues: '1',
-      decimals: '1',
-      useDataPlotColorForLabels: '1',
-      theme: 'fusion',
-    },
-    data: [],
-  },
-};
 
 // STEP 4 - Creating the component to pass the react-fusioncharts component
-const PieChart = () => {
+const PieChart = ({ data }) => {
+  const chartConfigs = {
+    type: 'pie3d', // The chart type
+    width: '100%', // Width of the chart
+    height: '400', // Height of the chart
+    dataFormat: 'json', // Data type
+    dataSource: {
+      chart: {
+        caption: 'Languages',
+        theme: 'fusion',
+        showBorder: 0,
+        decimals: 0,
+        pieRadius: '35%',
+      },
+      data,
+    },
+  };
   return <ReactFC {...chartConfigs} />;
 };
 
