@@ -5,17 +5,36 @@ import { useEffect } from 'react';
 import axios from 'axios';
 
 const mainUrl = 'https://api.github.com';
+const rateUrl = 'https://api.github.com/rate_limit';
 
-function App({ user }) {
-  useEffect(() => {
+function App({ user, dispatch }) {
+  const checkRequests = (url) => {
     axios
-      .get(mainUrl)
+      .get(url)
+      .then((res) => {
+        let {
+          rate: { remaining },
+        } = res.data;
+        dispatch({ type: 'set_request', payload: remaining });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getUser = (url) => {
+    axios
+      .get(url)
       .then((res) => {
         console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    checkRequests(rateUrl);
   }, []);
 
   return (

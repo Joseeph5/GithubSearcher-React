@@ -11,6 +11,7 @@ const initialStore = {
   user: user,
   followers: followers,
   repos: repos,
+  requests: 0,
   isLoading: false,
   error: { show: false, msg: '' },
 };

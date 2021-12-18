@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { MdBusiness, MdLocationOn, MdLink } from 'react-icons/md';
 
-function Card({ user }) {
+function Card(user) {
   const { avatar_url, html_url, name, company, blog, bio, location, twitter_username } =
     user;
   return (
@@ -117,7 +117,8 @@ const Wrapper = styled.article`
 `;
 
 const mapStateToProps = (store) => {
-  return { ...store };
+  const { user } = store;
+  return user;
 };
 
 export default connect(mapStateToProps)(Card);

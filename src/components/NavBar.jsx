@@ -7,7 +7,7 @@ function NavBar() {
       <h4>
         Welcome, <strong>joseph</strong>
       </h4>
-      <h4>logout</h4>
+      <button type='button'>logout</button>
     </Wrapper>
   );
 }
@@ -32,13 +32,19 @@ const Wrapper = styled.nav`
     object-fit: cover;
   }
   button {
-    background: transparent;
-    border: transparent;
-    font-size: 1.2rem;
+    border-radius: 5px;
+    border-color: transparent;
+    padding: 0.25rem 0.5rem;
     text-transform: capitalize;
     letter-spacing: var(--spacing);
-    color: var(--clr-grey-5);
+    background: var(--clr-primary-5);
+    color: var(--clr-white);
+    transition: var(--transition);
     cursor: pointer;
+    &:hover {
+      background: var(--clr-primary-8);
+      color: var(--clr-primary-1);
+    }
   }
 `;
 

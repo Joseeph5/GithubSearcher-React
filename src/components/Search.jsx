@@ -2,16 +2,72 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { MdSearch } from 'react-icons/md';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
-function Search({ error, requests, isLoading }) {
+const userUrl = 'https://api.github.com/users/';
+
+function Search({ error, requests, isLoading, dispatch }) {
   const user = useRef('');
+
+  const searchUser = async (url) => {
+    dispatch({
+      type: 'set_error',
+      payload: {
+        show: false,
+        msg: '',
+      },
+    });
+    dispatch({ type: 'set_loading', payload: true });
+    const res = await axios.get(url).catch((error) => {
+      // console.log(error);
+      dispatch({
+        type: 'set_error',
+        payload: {
+          show: true,
+          msg: 'there is no user with that username',
+        },
+      });
+    });
+
+    if (res) {
+      dispatch({ type: 'set_user', payload: res.data });
+      const { repos_url, followers_url } = res.data;
+      await Promise.all([
+        axios(`${repos_url}?per_page=100`),
+        axios(`${followers_url}?per_page=100`),
+      ])
+        .then((results) => {
+          const [repos, followers] = results;
+
+          if (repos.status === 200) {
+            dispatch({ type: 'set_repos', payload: repos.data });
+          }
+          if (followers.status === 200) {
+            dispatch({ type: 'set_followers', payload: followers.data });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    dispatch({ type: 'set_loading', payload: false });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (requests === 0) {
+      dispatch({
+        type: 'set_error',
+        payload: { show: true, msg: 'sorry, you have exceeded your hourly rate limit!' },
+      });
+    }
     if (user.current.value) {
-      console.log(user.current.value);
+      searchUser(userUrl + user.current.value);
     }
   };
+
   return (
     <section className='section'>
       <Wrapper className='section-center'>
