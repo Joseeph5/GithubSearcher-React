@@ -1,13 +1,14 @@
 import { Dashboard, Login, Error } from './pages';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 
-const mainUrl = 'https://api.github.com';
 const rateUrl = 'https://api.github.com/rate_limit';
 
-function App({ user, dispatch }) {
+function App() {
+  const dispatch = useDispatch();
+
   const checkRequests = (url) => {
     axios
       .get(url)
@@ -22,19 +23,9 @@ function App({ user, dispatch }) {
       });
   };
 
-  const getUser = (url) => {
-    axios
-      .get(url)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   useEffect(() => {
     checkRequests(rateUrl);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -50,8 +41,4 @@ function App({ user, dispatch }) {
   );
 }
 
-const mapStateToProps = (store) => {
-  return { ...store };
-};
-
-export default connect(mapStateToProps)(App);
+export default App;

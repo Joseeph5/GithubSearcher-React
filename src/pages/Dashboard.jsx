@@ -1,9 +1,10 @@
 import React from 'react';
 import { Info, NavBar, Repos, Search, User } from '../components';
 import loadingImage from '../assets/preloader.gif';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-function Dashboard({ isLoading }) {
+function Dashboard() {
+  const { isLoading } = useSelector((state) => state);
   if (isLoading) {
     return (
       <main>
@@ -24,7 +25,5 @@ function Dashboard({ isLoading }) {
     </div>
   );
 }
-const mapStateToProps = (store) => {
-  return { ...store };
-};
-export default connect(mapStateToProps)(Dashboard);
+
+export default Dashboard;
