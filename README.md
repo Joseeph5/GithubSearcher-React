@@ -2,7 +2,7 @@
 
 ## This project is under development.
 
-<a href="https://joseph-photostock.netlify.app/" target="_blank" rel="noopener noreferrer">
+<a href="https://joseph-githubsearcher.netlify.app/" target="_blank" rel="noopener noreferrer">
   <img src="./public/3.png" alt="GitHub Searcher">
 </a>
 
